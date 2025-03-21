@@ -20,6 +20,11 @@ How It Works
 	•	The solution saves your SQLite database file in an S3 bucket, enabling you to restore it across different cloud sessions.
 	•	Simply provide your AWS credentials as environment variables, and it will handle database creation and restoration automatically.
 
+
+How to Use (Example) - 
+- connect_db('dev')
+- %sql select * from tablename
+
 Limitations & Considerations
 
 🔹 This works best when your database size is small.
