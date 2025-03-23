@@ -1,3 +1,14 @@
+Metadata-Version: 2.4
+Name: persistent_sql
+Version: 0.1.2
+Summary: Persistent SQLite Database using S3 on Cloud Workspaces
+Author-email: Siddharth Singh <siddharthsingh5010@icloud.com>
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: boto3
+Requires-Dist: pandas
+Requires-Dist: numpy
+
 # Persistant SQLite Database on Cloud Workspaces 
 
 As a data science enthusiast, I have been using Lightning AI for my analytics and upskilling. It’s a great and cost-effective platform, but I’ve often faced one major limitation—the absence of SQL Server or any other persistent database.
@@ -12,17 +23,18 @@ I considered using AWS RDS or Azure Databases, but they are expensive and not id
 
 The Solution: Persistent SQL Database for Cloud Workspaces
 
-To address this, I built a python module 'persistent-sql' that allows users to maintain a persistent SQL database in cloud environments using:
+To address this, I built a solution that allows users to maintain a persistent SQL database in cloud environments using:
 ✅ SQLite Database for local queries
 ✅ AWS S3 Bucket for persistent storage
 
-How to Use - 
-1. pip install persistent-sql
-2. import persistent-sql as ps
-	ps.configure_aws(AWS_KEY, AWS_SECRET, AWS_BUCKET_NAME) 
-	ps.connect_db('DEV')
-	%sql select * from tablename
-	ps.close_connection()
+How It Works
+	•	The solution saves your SQLite database file in an S3 bucket, enabling you to restore it across different cloud sessions.
+	•	Simply provide your AWS credentials as environment variables, and it will handle database creation and restoration automatically.
+
+
+How to Use (Example) - 
+- connect_db('dev')
+- %sql select * from tablename
 
 Limitations & Considerations
 
@@ -31,4 +43,6 @@ Limitations & Considerations
 
 GitHub Repository & Demo Notebook
 
-I have shared sample notebook demonstrating how to use this solution. Feel free to explore, contribute, and share your feedback! 🚀
+I have shared the GitHub repo below, which includes a sample notebook demonstrating how to use this solution. Feel free to explore, contribute, and share your feedback! 🚀
+
+Would love to hear your thoughts! How do you manage databases in cloud workspaces? Let’s discuss in the comments. 👇

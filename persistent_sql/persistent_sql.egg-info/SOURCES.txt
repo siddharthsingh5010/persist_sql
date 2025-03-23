@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+persistent_sql/__init__.py
+persistent_sql.egg-info/PKG-INFO
+persistent_sql.egg-info/SOURCES.txt
+persistent_sql.egg-info/dependency_links.txt
+persistent_sql.egg-info/requires.txt
+persistent_sql.egg-info/top_level.txt
