@@ -17,6 +17,8 @@ global database_name
 global s3_client
 global _sqldf
 
+print("Follow the below to use Persistent SQL : \n 1. configure_aws(aws_key, aws_secret, aws_bucket) or configure_aws() using environment variables \n 2. connect_db(dbname) \n 3. %sql query to run any sql query with magic command \n 4. close_connection() to close the connection")
+
 def configure_aws(*kargs):
     """Configure AWS Credentials from either from Environment Variables or manually passing
     AWS ACCESS KEY : aws_key
@@ -90,8 +92,20 @@ def run_sql_script(sql):
 def sql(sqlquery):
     global _sqldf
     try:
-        _sqldf = pd.read_sql(sqlquery, connection)
+        sqlquery_u = f"""{sqlquery}"""
+        _sqldf = pd.read_sql(sqlquery_u, connection)
         connection.commit() 
+        return _sqldf
+    except Exception as e:
+        print(e)
+
+def run_sql(sqlquery):
+    """Execute SQL Query """
+    global _sqldf
+    try:
+        sqlquery_u = f"""{sqlquery}"""
+        _sqldf = pd.read_sql(sqlquery_u, connection)
+        connection.commit()
         return _sqldf
     except Exception as e:
         print(e)
@@ -100,9 +114,11 @@ def run_sql_file(filename):
     """Run SQL script from file"""
     with open(filename, 'r') as file:
         sql_script = file.read()
+    
+    sql_script_ = f"""{sql_script}"""
 
     # Run the SQL script
-    run_sql_script(sql_script)
+    run_sql_script(sql_script_)
 
 def close_connection():
     """Close the connection to the database and upload DB to S3 bucket"""
