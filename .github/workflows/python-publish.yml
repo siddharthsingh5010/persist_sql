@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-dists
-          path: dist/
+          path: persistent_sql/dist/
 
   pypi-publish:
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: release-dists
-          path: dist/
+          path: persistent_sql/dist/
 
       - name: Publish to PyPI with Twine
         env:
