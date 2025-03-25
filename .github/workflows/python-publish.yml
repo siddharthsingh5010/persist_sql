@@ -76,4 +76,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPYI_API_TOKEN }}  # ✅ Using GitHub Secrets
         run: |
           python -m pip install --upgrade twine
-          twine upload dist/*
+          twine upload persistent_sql/dist/*
