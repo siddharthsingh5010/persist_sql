@@ -95,6 +95,7 @@ def sql(sqlquery):
         sqlquery_u = f"""{sqlquery}"""
         _sqldf = pd.read_sql(sqlquery_u, connection)
         connection.commit() 
+        print("Result is stored in _sqldf")
         return _sqldf
     except Exception as e:
         print(e)
