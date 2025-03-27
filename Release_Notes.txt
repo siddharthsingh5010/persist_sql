@@ -1,2 +1,5 @@
+0.2.2:
+- added progress bar while connecting and closing connection
+
 0.2.1 :
 - added function to create tables directly from CSV files : create_table_from_csv(csv_file, table_name)
