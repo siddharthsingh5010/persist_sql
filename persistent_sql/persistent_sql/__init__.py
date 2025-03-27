@@ -5,6 +5,7 @@ import os
 import sys
 import boto3
 import botocore
+from tqdm import tqdm
 from IPython.core.magic import register_line_magic
 
 global __AWS_ACCESS_KEY
@@ -51,12 +52,26 @@ def connect_db(dbname):
     if __AWS_ACCESS_KEY==None or __AWS_SECRET_KEY==None or __S3_BUCKET_NAME==None:
         raise ValueError("AWS Credentials not configured, please configure using configure_aws(aws_key, aws_secret, aws_bucket)")
     database_name = dbname
+   
+
     s3_client = boto3.client('s3', aws_access_key_id=__AWS_ACCESS_KEY, aws_secret_access_key=__AWS_SECRET_KEY)
+    def get_s3_file_size(bucket_name, s3_key):
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=s3_key)
+        for obj in response.get('Contents', []):
+            if obj['Key'] == s3_key:
+                return obj['Size']  # File size in bytes
+
+        raise FileNotFoundError(f"File '{s3_key}' not found in bucket '{bucket_name}'")
+    file_size = get_s3_file_size(__S3_BUCKET_NAME, f"sql_db/{dbname}.db")
+    progress_bar = tqdm(total=file_size, unit='B', unit_scale=True, desc="Downloading")
+    def progress_callback(bytes_transferred):
+        progress_bar.update(bytes_transferred)
     if not os.path.exists("./.sqldb"):
         os.mkdir("./.sqldb")
     try:
-        s3_client.download_file(__S3_BUCKET_NAME, f"sql_db/{dbname}.db", f"./.sqldb/{dbname}.db")
+        s3_client.download_file(__S3_BUCKET_NAME, f"sql_db/{dbname}.db", f"./.sqldb/{dbname}.db",Callback=progress_callback)
         os.chmod(f"./.sqldb/{dbname}.db", 0o666)
+        progress_bar.close()
     except botocore.exceptions.ClientError as e:
         print(f"Database not found in S3, creating new database {dbname}")
     # Create Connection
@@ -152,9 +167,16 @@ def close_connection():
     """Close the connection to the database and upload DB to S3 bucket"""
     cursor.close()
     connection.close()
+    
     # Copy DB to S3 Bucket
     try:
-        s3_client.upload_file(f"./.sqldb/{database_name}.db", __S3_BUCKET_NAME, f"sql_db/{database_name}.db")
+        filepath = f"./.sqldb/{database_name}.db"
+        file_size = os.path.getsize(filepath)
+        progress_bar = tqdm(total=file_size, unit='B', unit_scale=True, desc="Uploading")
+        def progress_callback(bytes_transferred):
+            progress_bar.update(bytes_transferred)
+        s3_client.upload_file(filepath, __S3_BUCKET_NAME, f"sql_db/{database_name}.db",Callback=progress_callback)
+        progress_bar.close()
         os.remove(f"./.sqldb/{database_name}.db")
         print('Connection Successfully Closed and Database uploaded to S3')
     except Exception as e:
