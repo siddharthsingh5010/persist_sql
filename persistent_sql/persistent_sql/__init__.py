@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 import sqlite3
 import os
+import sys
 import boto3
 import botocore
 from IPython.core.magic import register_line_magic
@@ -16,7 +17,9 @@ global database_name
 global s3_client
 global _sqldf
 
-print("Follow the below to use Persistent SQL : \n 1. configure_aws(aws_key, aws_secret, aws_bucket) or configure_aws() using environment variables \n 2. connect_db(dbname) \n 3. %sql query to run any sql query with magic command \n 4. close_connection() to close the connection")
+_sqldf=None
+
+print("Follow the below to use Persistent SQL : \n 1. configure_aws(aws_key, aws_secret, aws_bucket) or configure_aws() using environment variables \n 2. connect_db(dbname) \n 3. %sql query to run any sql query with magic command \n 4. close_connection() to close the connection \n 5.If you want to use connection manually use variable 'connection'")
 
 def configure_aws(*kargs):
     """Configure AWS Credentials from either from Environment Variables or manually passing
@@ -97,6 +100,8 @@ def sql(sqlquery):
         _sqldf = pd.read_sql(sqlquery_u, connection)
         connection.commit() 
         print("Result is stored in _sqldf")
+        caller_module = sys.modules['__main__']
+        setattr(caller_module, '_sqldf', _sqldf)
         return _sqldf
     except TypeError as e1:
         pass
@@ -110,6 +115,8 @@ def run_sql(sqlquery):
         sqlquery_u = f"""{sqlquery}"""
         _sqldf = pd.read_sql(sqlquery_u, connection)
         connection.commit()
+        caller_module = sys.modules['__main__']
+        setattr(caller_module, '_sqldf', _sqldf)
         return _sqldf
     except Exception as e:
         print(e)
@@ -124,6 +131,23 @@ def run_sql_file(filename):
     # Run the SQL script
     run_sql_script(sql_script_)
 
+def create_table_from_csv(csv_file, table_name):
+    try:
+        # Read the CSV file into a pandas DataFrame
+        df = pd.read_csv(csv_file)
+        
+        # Create the table in the database
+        df.to_sql(table_name, connection, if_exists='replace', index=False)
+
+        # Commit changes and close the connection
+        connection.commit()
+        print(f"Table '{table_name}' created successfully in database '{database_name}'.")
+    except Exception as e:
+        print(e)
+
+# Example usage:
+# create_table_from_csv('data.csv', 'example.db', 'example_table')
+
 def close_connection():
     """Close the connection to the database and upload DB to S3 bucket"""
     cursor.close()
@@ -135,3 +159,9 @@ def close_connection():
         print('Connection Successfully Closed and Database uploaded to S3')
     except Exception as e:
         print(e)
+
+# Restrict access to private attributes
+def __getattr__(name):
+    if name.startswith("__"):
+        raise AttributeError(f"Module has no attribute {name}")
+    raise AttributeError(f"{name} not found in module")
