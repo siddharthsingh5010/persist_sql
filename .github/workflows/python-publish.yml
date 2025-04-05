@@ -29,14 +29,14 @@ jobs:
 
       - name: Build Release Distribution
         run: |
-          cd persistent_sql
+          cd persist_sql
           python -m build
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
           name: release-dists
-          path: persistent_sql/dist/
+          path: persist_sql/dist/
 
   pypi-publish:
     runs-on: ubuntu-latest
@@ -62,7 +62,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: release-dists
-          path: persistent_sql/dist/
+          path: persist_sql/dist/
 
       - name: Publish to PyPI with Twine
         env:
@@ -70,4 +70,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPYI_API_TOKEN }}  # ✅ Using GitHub Secrets
         run: |
           python -m pip install --upgrade twine
-          twine upload persistent_sql/dist/*
+          twine upload persist_sql/dist/*
