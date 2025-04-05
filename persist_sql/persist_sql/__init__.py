@@ -20,7 +20,7 @@ global _sqldf
 
 _sqldf=None
 
-print("Follow the below to use Persistent SQL : \n 1. configure_aws(aws_key, aws_secret, aws_bucket) or configure_aws() using environment variables \n 2. connect_db(dbname) \n 3. %sql query to run any sql query with magic command \n 4. close_connection() to close the connection \n 5.If you want to use connection manually use variable 'connection'")
+print("Follow the below to use Persist SQL : \n 1. configure_aws(aws_key, aws_secret, aws_bucket) or configure_aws() using environment variables \n 2. connect_db(dbname) \n 3. %sql query to run any sql query with magic command \n 4. close_connection() to close the connection \n 5.If you want to use connection manually use variable 'connection'")
 
 def configure_aws(*kargs):
     """Configure AWS Credentials from either from Environment Variables or manually passing
