@@ -4,13 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "persistentsql"
-version = "0.1.1"
+version = "0.1.2"
 description = "Peristent SQLite Database using S3 on Cloud Workspaces"
 authors = [{ name = "Siddharth Singh", email = "siddharthsingh5010@icloud.com" }]
 license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.6"
 dependencies = [ "boto3","pandas","numpy"]
+
+[project.urls]
+Repository = "https://github.com/siddharthsingh5010/persistentsql"
 
 [tool.setuptools]
 packages = ["persistentsql"]
