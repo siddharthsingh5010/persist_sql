@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "persist_sql"
-version = "0.1.0"
+version = "0.2.0"
 description = "Peristent SQLite Database using S3 on Cloud Workspaces"
 authors = [{ name = "Siddharth Singh", email = "devsiddharthsingh5010@icloud.com" }]
 license = { file = "LICENSE" }
