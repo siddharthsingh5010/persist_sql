@@ -29,6 +29,6 @@ Limitations & Considerations
 🔹 This works best when your database size is small.
 🔹 If your data grows significantly, consider splitting tables across multiple database files to optimize performance.
 
-GitHub Repository & Demo Notebook
+GitHub Repository : [https://github.com/siddharthsingh5010/persistentsql]
 
 I have shared sample notebook demonstrating how to use this solution. Feel free to explore, contribute, and share your feedback! 🚀
