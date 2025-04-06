@@ -1,4 +1,4 @@
-# Persist SQLite Database on Cloud Workspaces 
+# Persistent SQLite Database on Cloud Workspaces 
 
 As a data science enthusiast, I have been using Lightning AI for my analytics and upskilling. It’s a great and cost-effective platform, but I’ve often faced one major limitation—the absence of SQL Server or any other persistent database.
 
@@ -17,8 +17,8 @@ To address this, I built a python module 'persist-sql' that allows users to main
 ✅ AWS S3 Bucket for persistent storage
 
 How to Use - 
-1. pip install persist-sql
-2. import persist-sql as ps
+1. pip install persistentsql
+2. import persistentsql as ps
 	ps.configure_aws(AWS_KEY, AWS_SECRET, AWS_BUCKET_NAME) 
 	ps.connect_db('DEV')
 	%sql select * from tablename
