@@ -1,5 +1,8 @@
 # Persistant SQLite Database on Cloud Workspaces 
 
+[![PyPI Downloads](https://static.pepy.tech/badge/persistentsql)](https://pepy.tech/projects/persistentsql) 
+
+
 As a data science enthusiast, I have been using Lightning AI for my analytics and upskilling. It’s a great and cost-effective platform, but I’ve often faced one major limitation—the absence of SQL Server or any other persistent database.
 
 This isn’t just a Lightning AI issue; it’s a common challenge with Google Colab, Codespaces, and other cloud workspaces. One common workaround is using SQLite, but there’s a catch—since cloud workspaces are ephemeral, all data is lost after every session, forcing me to recreate tables from scratch each time.
